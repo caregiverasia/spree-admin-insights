@@ -30,6 +30,23 @@ module Spree
     end
 
     private def query_with_inventory_unit_quantities
+      if defined?(SpreeGlobalize)
+        query_with_inventory_unit_quantities_with_global
+      else
+        query_with_inventory_unit_quantities_without_global
+
+      end
+    end
+
+    private def query_without_inventory_unit_quantities
+      if defined?(SpreeGlobalize)
+        query_without_inventory_unit_quantities_with_global
+      else
+        query_without_inventory_unit_quantities_without_global
+      end
+    end
+
+    private def query_with_inventory_unit_quantities_without_global
       Spree::LineItem
         .joins(:order)
         .joins(:variant)
@@ -48,7 +65,7 @@ module Spree
         )
     end
 
-    private def query_without_inventory_unit_quantities
+    private def query_without_inventory_unit_quantities_without_global
       Spree::LineItem
         .joins(:order)
         .joins(:variant)
@@ -61,6 +78,44 @@ module Spree
         .group(:variant_id, :product_name, :product_slug, 'spree_variants.sku')
         .select(
           'spree_products.name        as product_name',
+          'spree_products.slug        as product_slug',
+          'spree_variants.sku         as sku',
+          'count(spree_line_items.id) as sold_count'
+        )
+    end
+
+    private def query_with_inventory_unit_quantities_with_global
+      Spree::LineItem
+        .joins(:order)
+        .joins(:variant)
+        .joins(product: :translations)
+        .joins(:inventory_units)
+        .where(Spree::Product.arel_table[:name].matches(search_name))
+        .where(spree_orders: { state: 'complete' })
+        .where(spree_orders: { completed_at: reporting_period })
+        .where.not(spree_inventory_units: { state: 'returned' })
+        .group(:variant_id, :product_name, :product_slug, 'spree_variants.sku')
+        .select(
+          "#{Product::Translation.table_name}.name        as product_name",
+          'spree_products.slug        as product_slug',
+          'spree_variants.sku         as sku',
+          'sum(spree_inventory_units.quantity) as sold_count'
+        )
+    end
+
+    private def query_without_inventory_unit_quantities_with_global
+      Spree::LineItem
+        .joins(:order)
+        .joins(:variant)
+        .joins(product: :translations)
+        .joins(:inventory_units)
+        .where(Spree::Product.arel_table[:name].matches(search_name))
+        .where(spree_orders: { state: 'complete' })
+        .where(spree_orders: { completed_at: reporting_period })
+        .where.not(spree_inventory_units: { state: 'returned' })
+        .group(:variant_id, :product_name, :product_slug, 'spree_variants.sku')
+        .select(
+          "#{Product::Translation.table_name}.name        as product_name",
           'spree_products.slug        as product_slug',
           'spree_variants.sku         as sku',
           'count(spree_line_items.id) as sold_count'
