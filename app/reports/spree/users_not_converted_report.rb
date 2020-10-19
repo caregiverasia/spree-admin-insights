@@ -30,11 +30,11 @@ module Spree
     end
 
     def report_query
-      users = Spree::User.arel_table
+      users = Spree.user_class.arel_table
       orders = Spree::Order.arel_table
-      Spree::User
+      Spree.user_class
         .where(created_at: reporting_period)
-        .where(Spree::User.arel_table[:email].matches(email_search))
+        .where(Spree.user_class.arel_table[:email].matches(email_search))
         .where(Spree::Order
           .where(orders[:user_id].eq(users[:id]).and(
             orders[:completed_at].not_eq(nil))

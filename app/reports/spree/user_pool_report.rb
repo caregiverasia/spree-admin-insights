@@ -26,7 +26,7 @@ module Spree
     end
 
     private def grouped_sign_ups
-      sign_ups = Spree::User.where(created_at: reporting_period).select(:id, *time_scale_selects)
+      sign_ups = Spree.user_class.where(created_at: reporting_period).select(:id, *time_scale_selects)
 
       Report::QueryFragments.from_subquery(sign_ups)
         .group(*time_scale_columns, 'guest_users', 'active_users')

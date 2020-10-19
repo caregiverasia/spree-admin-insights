@@ -6,4 +6,4 @@ module SpreeAdminInsights
   end
 end
 
-::Spree::User.prepend(::SpreeAdminInsights::UserDecorator)
+::Spree.user_class.prepend(::SpreeAdminInsights::UserDecorator)
