@@ -39,6 +39,7 @@
   <%= render 'chart' %>
 
   <div id="table-helpers" class="row pull-right hide">
+    <!--
     <span id="page-selector">
       <span class="select-box-slide pull-right">
         <%= select_tag :per_page, options_for_select(page_selector_options, params[:per_page] || Spree::Config[:records_per_page]), class: 'form-control text-right pull-right page-select' %>
@@ -54,6 +55,7 @@
         <% end %>
       </span>
     </span>
+    -->
     <span id='page-helpers'>
       <span title="reset" class="col-md-2 pull-right">
         <%= link_to '#', class: 'btn btn-default', id: 'reset' do %>
