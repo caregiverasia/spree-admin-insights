@@ -10,9 +10,12 @@ TableSorter.prototype.bindEvents = function() {
   var _this = this;
   this.$insightsTableList.on('click', '#admin-insight .sortable-link', function() {
     event.preventDefault();
+    var $url = $(event.target).attr('href');
+    $url += $url.indexOf("?") === -1 ? "?" : "&";
+
     var currentPage = _this.paginatorDiv.find('li.active a').html() - 1,
       paginated = !_this.reportLoader.removePaginationButton.closest('span').hasClass('hide'),
-      requestPath = $(event.target).attr('href') + '&' + $('#filter-search').serialize() + '&page=' + currentPage + "&per_page=" + _this.reportLoader.pageSelector.find(':selected').attr('value') + '&paginate=' + paginated;
+      requestPath = $url + $('#filter-search').serialize() + '&page=' + currentPage + "&per_page=" + _this.reportLoader.pageSelector.find(':selected').attr('value') + '&paginate=' + paginated;
     _this.reportLoader.requestUrl = requestPath;
 
     $.ajax({

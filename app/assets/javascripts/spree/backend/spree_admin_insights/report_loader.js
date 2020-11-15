@@ -84,8 +84,12 @@ ReportLoader.prototype.resetFilters = function(event) {
   event.preventDefault();
   var $element = $(event.target),
       paginated = !this.removePaginationButton.closest('span').hasClass('hide');
-  $element.attr('href', this.perPageSelector.data('url') + '&paginate=' + paginated);
-  $element.data('url', this.perPageSelector.data('url') + '&paginate=' + paginated);
+  
+  var $url = this.perPageSelector.data('url');
+  $url += $url.indexOf("?") === -1 ? "?" : "&";
+
+  $element.attr('href', $url + 'paginate=' + paginated);
+  $element.data('url', $url + 'paginate=' + paginated);
   this.loadChart($element);
   this.searcherObject.clearSearchFields();
 };
