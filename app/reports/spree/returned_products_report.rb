@@ -5,7 +5,7 @@ module Spree
     SEARCH_ATTRIBUTES          = { start_date: :product_returned_from, end_date: :product_returned_till }
     SORTABLE_ATTRIBUTES        = [:product_name, :sku, :return_count]
 
-    deeplink product_name: { template: %Q{<a href="/admin/products/{%# o.product_slug %}" target="_blank">{%# o.product_name %}</a>} }
+    deeplink product_name: { template: %Q{<a href="/store/store_admin/products/{%# o.product_slug %}" target="_blank">{%# o.product_name %}</a>} }
 
     class Result < Spree::Report::Result
       class Observation < Spree::Report::Observation

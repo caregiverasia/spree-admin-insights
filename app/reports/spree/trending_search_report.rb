@@ -17,7 +17,7 @@ module Spree
       end
     end
 
-    deeplink searched_term: { template: %Q{<a href='/products?utf8=%E2%9C%93&keywords={%# o['searched_term'] %}' target="_blank">{%# o['searched_term'] %}</a>} }
+    deeplink searched_term: { template: %Q{<a href='/store/products?utf8=%E2%9C%93&keywords={%# o['searched_term'] %}' target="_blank">{%# o['searched_term'] %}</a>} }
 
     def paginated_report_query
       report_query

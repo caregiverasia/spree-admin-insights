@@ -15,7 +15,7 @@ module Spree
       end
     end
 
-    deeplink product_name: { template: %Q{<a href="/admin/products/{%# o.product_slug %}" target="_blank">{%# o.product_name %}</a>} }
+    deeplink product_name: { template: %Q{<a href="/store/store_admin/products/{%# o.product_slug %}" target="_blank">{%# o.product_name %}</a>} }
 
     def report_query
       page_events_ar         = Arel::Table.new(:spree_page_events)
