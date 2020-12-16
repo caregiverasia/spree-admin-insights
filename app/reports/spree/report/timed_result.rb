@@ -14,8 +14,14 @@ module Spree
 
       def populate_observations
         @results.each do |result|
-          matching_observation = @observations.find { |observation| observation.describes? result, time_scale }
-          matching_observation.populate result
+          begin
+            matching_observation = @observations.find { |observation| observation.describes? result, time_scale }
+            matching_observation.populate result
+          rescue Exception => e
+            # skipped if something went wrong
+            # NOTE: There's a bug where the results returns data outside of the range of @observations
+            #       This is a workaround until the main cause of the bug is fixed
+          end
         end
       end
 
